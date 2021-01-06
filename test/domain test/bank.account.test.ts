@@ -7,7 +7,7 @@ describe('test account bank',() => {
   let bankAccount : BankAccount;
 
 describe('SAving Account', () => {
-  beforeAll( () =>{
+  beforeEach( () =>{
     bankAccount = new SavingAccount();
     bankAccount.number='0000';
     bankAccount.city='valledupar';
@@ -25,11 +25,26 @@ describe('SAving Account', () => {
 
   });
 
+  test('Consignación posterior a la inicial correcta', () => {
+
+    const newTransaccion: Transaction = new Transaction();
+    newTransaccion.city = "Valledupar";
+    newTransaccion.value = 50000;
+    bankAccount.consing(newTransaccion);
+    newTransaccion.city = "Valledupar";
+    newTransaccion.value = 20000;
+    bankAccount.remove(newTransaccion);
+    newTransaccion.city = "Valledupar";
+    newTransaccion.value = 49950;
+    bankAccount.consing(newTransaccion);
+    expect(bankAccount.balance).toBe(79950);
+  });
+
 });
 
 
   describe('Current Account', () => {
-    beforeAll( () =>{
+    beforeEach( () =>{
       bankAccount = new cuentaCorriente();
       bankAccount.number='0000';
       bankAccount.city='valledupar';
@@ -46,6 +61,28 @@ describe('SAving Account', () => {
 
     });
 
+
+    test('Consignación Inicial Correcta', () => {
+      const newTransaccion: Transaction = new Transaction();
+      newTransaccion.city = "Valledupar";
+      newTransaccion.value = 60000;
+      bankAccount.consing(newTransaccion);
+      expect(bankAccount.balance).toBe(0);
+    });
+
+    test('Consignación Inicial Incorrecta', () => {
+      const newTransaccion: Transaction = new Transaction();
+      newTransaccion.city = "Valledupar";
+      newTransaccion.value = 20000;
+      bankAccount.consing(newTransaccion);
+      expect(bankAccount.balance).toBe(0);
+    });
+
+
+
   });
+
+
+
 
 });
