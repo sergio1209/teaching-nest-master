@@ -9,6 +9,7 @@ export abstract class BankAccount implements IFinancialService{
   public ownerId: string;
   public city: string;
   public movements: FinancialMovement[];
+
   constructor() {
     this.movements  = []
   }

@@ -1,18 +1,17 @@
 import { BankAccount } from "./bank.account";
 
 import { Transaction } from "./transaction";
+import { FinancialMovement } from "./financial.movement";
 
 export class cuentaCorriente extends BankAccount{
 
   //variables
-  cupo_Sobregiro: number=-20000;
-  minimo_PrimeraConsignacion:number=100000;
-  cuatro_Mil: number;
+ private readonly  cupo_Sobregiro: number=-20000;
+  private readonly  minimo_PrimeraConsignacion:number=100000;
 
-  //validacion
-  validateFirstMovements(){
-    return this.movements.length == 0;
-  }
+
+
+
 
 //consignacion
   public consing(transaction) {
@@ -25,19 +24,27 @@ export class cuentaCorriente extends BankAccount{
 
   //retiro
   public remove(transaction){
-
-let nuevoBalance: number = this.balance - this.CuatroPorMil(transaction.value);
-    if(nuevoBalance >= this.cupo_Sobregiro){
+    let newBalance: number = this.balance - this.CuatroPorMil(transaction.value);
+    if(newBalance >= this.cupo_Sobregiro){
       this.balance -= transaction.value;
+      let newMovement = new FinancialMovement();
+      newMovement.type = 'Retiro';
+      newMovement.date = new Date();
+      newMovement.value = transaction.value;
+      this.movements.push(newMovement);
     }
   }
-
+//validacion
+  validateFirstMovements(){
+    return this.movements.length == 0;
+  }
 //metodo cuatro por mil
-  CuatroPorMil(transaction){
-  this.cuatro_Mil= (transaction.value *4/1000);
-    let minimal_Balance= transaction.value-this.cuatro_Mil;
 
-    return minimal_Balance;
+
+CuatroPorMil(value: number){
+
+    return value - ((value * 4)/1000);
+
   }
 
 //transferencia
