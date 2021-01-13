@@ -2,6 +2,7 @@ import { IUnitOfWork } from "../../infraestructure/contracts/i.unit.of.work";
 import { cuentaCorriente } from "../../domain/entity/cuentaCorriente";
 import { BankAccount } from "../../domain/entity/bank.account";
 import { Transaction } from "../../domain/entity/transaction";
+import { currentaccountRepository } from "../../infraestructure/repositories/currentaccount.repository";
 
 
 export class RegisterCurrentAccountService{
@@ -17,12 +18,13 @@ export class RegisterCurrentAccountService{
         newAccount.ownerId = request.ownerId;
         newAccount.city= request.city;
         const firstTransaction:  Transaction =  new Transaction();
-        firstTransaction.value = request.firstConsingValue;
+        firstTransaction.value= parseInt(request.firstConsingValue.toString());
+        firstTransaction.city = request.city;
         newAccount.consing(firstTransaction);
 
         if (newAccount.balance > 0){
           this.unitOfWork.start();
-          const savedAccount = await this.unitOfWork.currentaccountRepository.save(newAccount);
+          const savedAccount = await this.unitOfWork.currentaccountRepository.save(currentaccountRepository.mapEntityToOrm(newAccount) );
           if (savedAccount != undefined){
             return new RegisterCurrentAccountResponse('Cuenta corriente numero' + savedAccount.number + 'ha sido creada satisfactoriamente');
           }

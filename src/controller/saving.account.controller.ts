@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put } from "@nestjs/common";
 import { UnitOfWork } from "../infraestructure/base/unit.of.work";
 import {
   RegisterSavingAccountRequest,
@@ -25,12 +25,12 @@ export class SavingAccountController{
     const service: RegisterSavingAccountService = new RegisterSavingAccountService(this.unitOfWork);
     return await service.execute(request);
   }
-  @Post()
+  @Put( 'consignar')
   async ConsingSavingAccount(@Body() request: ConsingSavingAccountRequest){
     const service: ConsingSavingAccountService = new ConsingSavingAccountService(this.unitOfWork);
     return await service.execute(request);
   }
-  @Post()
+  @Put('retirar')
   async RemoveSavingAccount(@Body() request: RemoveSavingAccountRequest){
     const service: RemoveSavingAccountService = new RemoveSavingAccountService(this.unitOfWork);
     return await service.execute(request);

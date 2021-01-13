@@ -20,4 +20,14 @@ export class currentaccountRepository extends GenericRepository<CuentaCorrienteO
     account.movements = Orm.movements;
     return account;
   }
+  public static mapEntityToOrm(entity: BankAccount): CuentaCorrienteOrm{
+    const orm: CuentaCorrienteOrm = new cuentaCorriente();
+    orm._id= entity._id;
+    orm.number= entity.number;
+    orm.ownerId=entity.ownerId;
+    orm.city= entity.city;
+    orm.balance= entity.balance == undefined ? 0 : entity.balance;
+    orm.movements = entity.movements;
+    return orm;
+  }
 }

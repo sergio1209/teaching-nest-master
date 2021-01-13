@@ -13,6 +13,7 @@ export abstract class BankAccount implements IFinancialService{
 
   constructor() {
     this.movements  = []
+    this.balance = 0;
   }
   public consing(transaction: Transaction){
     let nuevoMovimiento= new FinancialMovement();

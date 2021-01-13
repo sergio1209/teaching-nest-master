@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Put } from "@nestjs/common";
 import { UnitOfWork } from "../infraestructure/base/unit.of.work";
 import {
   RegisterCurrentAccountRequest,
@@ -21,7 +21,7 @@ import {
   RemoveCurrentAccountService
 } from "../aplication/current-account/remove.current.account.service";
 
-@Controller('currentAcoount')
+@Controller('currentAccount')
 export class CurrentAccountController{
 
   constructor(private readonly unitOfWork: UnitOfWork) {
@@ -31,12 +31,12 @@ export class CurrentAccountController{
     const service: RegisterCurrentAccountService = new RegisterCurrentAccountService(this.unitOfWork);
     return await service.execute(request);
   }
-  @Post()
+  @Put( 'consignar')
   async ConsingCurrentAccount(@Body() request: ConsingCurrentAccountRequest){
     const service: ConsingCurrentAccountService = new ConsingCurrentAccountService(this.unitOfWork);
     return await service.execute(request);
   }
-  @Post()
+  @Put('retirar')
   async RemoveCurrentAccount(@Body() request: RemoveCurrentAccountRequest){
     const service: RemoveCurrentAccountService = new RemoveCurrentAccountService(this.unitOfWork);
     return await service.execute(request);
